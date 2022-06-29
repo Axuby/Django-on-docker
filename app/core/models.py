@@ -8,12 +8,12 @@ class UserManager(BaseUserManager):
         if not email:
             raise ValueError("Users must have an email address")
         user = self.model(email=self.normalize_email(email), **extra_fields)
-        user.set_password(password)  # encrypted thus can't be parsed above
+        user.set_password(password)  # should be encrypted thus can't be parsed above,parsed separately
         user.save(using=self._db)  # for multiple db
 
         return user  # user model just created
 
-    def create_superuser(self, email, password):
+    def create_superuser(self, email, password):  # is_superuser is included as part of the permission mixins
         """creates and saves a new superuser"""
         user = self.create_user(email, password)
         user.is_superuser = True
